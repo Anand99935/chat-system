@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import "./App.css";
+import axios from "axios";
+
 // import AdminPanel from "./components/adminpanel";
 
-const socket = io("http://localhost:5000");
+const socket = io(process.env.REACT_APP_API_URL);
 
 function App() {
   const [message, setMessage] = useState("");
@@ -14,6 +16,7 @@ function App() {
 
   // Scroll to bottom on new message
   useEffect(() => {
+     axios.get(`${process.env.REACT_APP_API_URL}/messages`)
     const chatBox = document.querySelector(".chat-box");
     if (chatBox) chatBox.scrollTop = chatBox.scrollHeight;
   }, [chat]);
@@ -31,7 +34,7 @@ function App() {
 
   // Load previous messages and listen for new ones
   useEffect(() => {
-    fetch("http://localhost:5000/messages")
+    fetch(`${process.env.REACT_APP_API_URL}/messages`)
       .then((res) => res.json())
       .then((data) => setChat(data));
 
@@ -47,7 +50,7 @@ function App() {
   const handleLogin = async () => {
     if (name.trim() && email.trim()) {
       try {
-        const res = await fetch("http://localhost:5000/login", {
+        const res = await fetch(`${process.env.REACT_APP_API_URL}/login`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ name, email }),

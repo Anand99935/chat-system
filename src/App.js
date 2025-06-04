@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import "./App.css";
-import axios from "axios";
 
-// import AdminPanel from "./components/adminpanel";
 
-// const socket = io(process.env.REACT_APP_API_URL);
-
-const socket = io('process.env.REACT_APP_API_URL', {
-  transports: ['websocket'], // force websocket
+const socket = io(process.env.REACT_APP_API_URL, {
+  transports: ['websocket'],
   withCredentials: true
 });
 
@@ -20,14 +16,14 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
 
   // Scroll to bottom on new message
-  useEffect(() => {
-     axios.get(`${process.env.REACT_APP_API_URL}/messages`)
-    const chatBox = document.querySelector(".chat-box");
-    if (chatBox) chatBox.scrollTop = chatBox.scrollHeight;
-  }, [chat]);
+useEffect(() => {
+  const chatBox = document.querySelector(".chat-box");
+  if (chatBox) chatBox.scrollTop = chatBox.scrollHeight;
+}, [chat]);
 
   // Auto-login if user is saved in localStorage
   useEffect(() => {
+  
     const stored = localStorage.getItem("chatUser");
     if (stored) {
       const user = JSON.parse(stored);
@@ -55,12 +51,13 @@ function App() {
   const handleLogin = async () => {
     if (name.trim() && email.trim()) {
       try {
-        const res = await fetch(`${process.env.REACT_APP_API_URL}/login`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name, email }),
-        });
-
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email }),
+      credentials: "include",
+     });
+     
         const data = await res.json();
 
         if (data.success) {

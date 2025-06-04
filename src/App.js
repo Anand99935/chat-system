@@ -5,7 +5,12 @@ import axios from "axios";
 
 // import AdminPanel from "./components/adminpanel";
 
-const socket = io(process.env.REACT_APP_API_URL);
+// const socket = io(process.env.REACT_APP_API_URL);
+
+const socket = io('process.env.REACT_APP_API_URL', {
+  transports: ['websocket'], // force websocket
+  withCredentials: true
+});
 
 function App() {
   const [message, setMessage] = useState("");

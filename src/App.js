@@ -1,30 +1,29 @@
-import React, { useEffect, useState } from "react";
-import { io } from "socket.io-client";
-import "./App.css";
+import './App.css';
+
+import React, {useEffect, useState} from 'react';
+import {io} from 'socket.io-client';
 
 
-const socket = io(process.env.REACT_APP_API_URL, {
-  transports: ['websocket'],
-  withCredentials: true
-});
+const socket =
+    io(process.env.REACT_APP_API_URL,
+       {transports: ['websocket'], withCredentials: true});
 
 function App() {
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState('');
   const [chat, setChat] = useState([]);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [loggedIn, setLoggedIn] = useState(false);
 
   // Scroll to bottom on new message
-useEffect(() => {
-  const chatBox = document.querySelector(".chat-box");
-  if (chatBox) chatBox.scrollTop = chatBox.scrollHeight;
-}, [chat]);
+  useEffect(() => {
+    const chatBox = document.querySelector('.chat-box');
+    if (chatBox) chatBox.scrollTop = chatBox.scrollHeight;
+  }, [chat]);
 
   // Auto-login if user is saved in localStorage
   useEffect(() => {
-  
-    const stored = localStorage.getItem("chatUser");
+    const stored = localStorage.getItem('chatUser');
     if (stored) {
       const user = JSON.parse(stored);
       setName(user.name);
@@ -36,57 +35,61 @@ useEffect(() => {
   // Load previous messages and listen for new ones
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/messages`)
-      .then((res) => res.json())
-      .then((data) => setChat(data));
+        .then((res) => res.json())
+        .then((data) => setChat(data));
 
-    socket.on("receive-message", (msg) => {
+    socket.on('receive-message', (msg) => {
       setChat((prev) => [...prev, msg]);
     });
 
     return () => {
-      socket.off("receive-message");
+      socket.off('receive-message');
     };
   }, []);
 
   const handleLogin = async () => {
     if (name.trim() && email.trim()) {
       try {
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email }),
-      credentials: "include",
-     });
-     
+        const res = await fetch(`${process.env.REACT_APP_API_URL}/api/login`, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({name, email}),
+        });
+        if (!res.ok) {
+          const errorText = await res.text();
+          console.error('Server error response:', errorText);
+          throw new Error('Login failed (non-JSON response)');
+        }
+
         const data = await res.json();
 
         if (data.success) {
-          localStorage.setItem("chatUser", JSON.stringify(data.user));
+          localStorage.setItem('chatUser', JSON.stringify(data.user));
           setLoggedIn(true);
         } else {
-          alert("Login failed");
+          alert('Login failed');
         }
       } catch (err) {
-        console.error("Login error:", err);
-        alert("Server error while logging in");
+        console.error('Login error:', err);
+        alert('Server error while logging in');
       }
     }
   };
 
   const sendMessage = () => {
     if (message.trim()) {
-      socket.emit("send-message", {
+      socket.emit('send-message', {
         sender: name,
         text: message,
       });
-      setMessage("");
+      setMessage('');
     }
   };
 
   // Show login form if not logged in
   if (!loggedIn) {
     return (
-      <div className="login-container">
+      <div className='login-container'>
         <h2>Login to Chat</h2>
         <input
           placeholder="Enter your name"
@@ -94,11 +97,12 @@ useEffect(() => {
           onChange={(e) => setName(e.target.value)}
         />
         <input
-          placeholder="Enter your email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <button onClick={handleLogin}>Join Chat</button>
+    placeholder = 'Enter your email'
+  value = {email} onChange =
+  {
+    (e) => setEmail(e.target.value)
+  } />
+        <button onClick={handleLogin}>Join Chat</button >
       </div>
     );
   }
@@ -106,34 +110,33 @@ useEffect(() => {
   return (
     <div className="chat-container">
       <header>💬 Team Chat</header>
-      <div className="chat-box">
-        {chat.map((msg, index) => (
+      <div className = 'chat-box'> {chat.map((msg, index) => (
           <div
             key={index}
-            className={`chat-bubble ${msg.sender === name ? "you" : "other"}`}
+            className={`chat-bubble ${msg.sender === name ? 'you' : 'other'}`}
           >
-            <div className="sender">{msg.sender}</div>
+            <div className='sender'>{msg.sender}</div>
             <div className="text">{msg.text}</div>
           </div>
         ))}
       </div>
 
-      <div className="input-area">
+      <div className='input-area'>
         <input
-          placeholder="Type your message..."
+          placeholder='Type your message...'
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+          onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
         />
         <button onClick={sendMessage}>Send</button>
       </div>
         <div>
     <span>{name}</span>
-    <button className="logout-btn" onClick={() => {
-      localStorage.removeItem("chatUser");
+    <button className='logout-btn' onClick={() => {
+      localStorage.removeItem('chatUser');
       setLoggedIn(false);
-      setName("");
-      setEmail("");
+      setName('');
+      setEmail('');
     }}>Logout</button>
   </div>
     </div>

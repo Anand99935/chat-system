@@ -6,11 +6,6 @@ const socket =
     io(process.env.REACT_APP_API_URL,
        {transports: ['websocket'], withCredentials: true});
 
-socket.emit('send-message', {
-  sender: 'admin@chat.com',
-  receiver: 'user@example.com',
-  // text: 'Hello User!'
-});
 
 
 function App() {
@@ -146,14 +141,18 @@ function App() {
   const sendMessage = () => {
   if (message.trim()) {
     const isAdmin = localStorage.getItem('isAdmin') === 'true';
+    const receiver = isAdmin && selectedUser ? selectedUser.name : 'Admin';
+    
     socket.emit('send-message', {
       sender: name,
       text: message,
-      receiver: isAdmin && selectedUser ? selectedUser.name : null,
+      receiver
     });
+
     setMessage('');
   }
 };
+
 
   // Show login form if not logged in
   if (!loggedIn) {
@@ -206,7 +205,7 @@ if (loggedIn && isAdmin && !selectedUser) {
  return (
   <div className="chat-container">
     <header>
-      💬 Team Chat
+      💬 The Chat
       {isAdmin && selectedUser && (
         <span style={{marginLeft: 20}}>Chatting with: {selectedUser.name}</span>
       )}

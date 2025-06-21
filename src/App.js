@@ -138,11 +138,25 @@ function App() {
 // };
 
 
-  const sendMessage = () => {
+//   const sendMessage = () => {
+//   if (message.trim()) {
+//     const isAdmin = localStorage.getItem('isAdmin') === 'true';
+//     const receiver = isAdmin && selectedUser ? selectedUser.name : 'Admin';
+    
+//     socket.emit('send-message', {
+//       sender: name,
+//       text: message,
+//       receiver
+//     });
+
+//     setMessage('');
+//   }
+// };
+const sendMessage = () => {
   if (message.trim()) {
     const isAdmin = localStorage.getItem('isAdmin') === 'true';
     const receiver = isAdmin && selectedUser ? selectedUser.name : 'Admin';
-    
+
     socket.emit('send-message', {
       sender: name,
       text: message,
@@ -202,55 +216,79 @@ if (loggedIn && isAdmin && !selectedUser) {
   );
 }
 
- return (
+return (
   <div className="chat-container">
-    <header>
-      💬 The Chat
-      {isAdmin && selectedUser && (
-        <span style={{marginLeft: 20}}>Chatting with: {selectedUser.name}</span>
+    <div className="chat-header">
+      {isAdmin && selectedUser ? (
+        <>
+          <button className="back-button" onClick={() => setSelectedUser(null)}>
+            ← Back
+          </button>
+          <h3>Chatting with : {selectedUser.name}</h3>
+        </>
+      ) : (
+        <h3>💬 Chat with Mypursu</h3>
       )}
-    </header>
-    <div className='chat-box'>
+    </div>
+
+    <div className="chat-box">
       {chat
-        .filter(msg => {
-          if (!isAdmin) return true;
-          // Admin: show only messages with selected user
-          return (
-            (msg.sender === name && msg.receiver === selectedUser?.name) ||
-            (msg.sender === selectedUser?.name && msg.receiver === name)
-          );
+        .filter((msg) => {
+          if (isAdmin && selectedUser) {
+            return (
+              (msg.sender === name && msg.receiver === selectedUser.name) ||
+              (msg.sender === selectedUser.name && msg.receiver === name)
+            );
+          } else if (!isAdmin) {
+            return (
+              (msg.sender === name && msg.receiver === 'Admin') ||
+              (msg.sender === 'Admin' && msg.receiver === name)
+            );
+          }
+          return false;
         })
         .map((msg, index) => (
           <div
             key={index}
             className={`chat-bubble ${msg.sender === name ? 'you' : 'other'}`}
           >
-            <div className='sender'>{msg.sender}</div>
+            <div className="sender">{msg.sender}</div>
             <div className="text">{msg.text}</div>
           </div>
         ))}
     </div>
-    <div className='input-area'>
+
+    <div className="input-area">
       <input
-        placeholder='Type your message...'
+        className="chat-input"
+        placeholder="Type your message..."
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
       />
-      <button onClick={sendMessage}>Send</button>
+      <button className="send-button" onClick={sendMessage}>
+        ➤
+      </button>
     </div>
-    <div>
-      <span>{name}</span>
-      <button className='logout-btn' onClick={() => {
-        localStorage.removeItem('chatUser');
-        localStorage.removeItem('isAdmin');
-        setLoggedIn(false);
-        setName('');
-        setEmail('');
-      }}>Logout</button>
+
+    <div className="footer">
+      <span className="user-label">User Name :  {name}</span>
+      <button
+        className="logout-btn"
+        onClick={() => {
+          localStorage.removeItem('chatUser');
+          localStorage.removeItem('isAdmin');
+          setLoggedIn(false);
+          setName('');
+          setEmail('');
+        }}
+      >
+        Logout
+      </button>
     </div>
   </div>
 );
+
 }
 
 export default App;

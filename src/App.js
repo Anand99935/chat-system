@@ -16,6 +16,7 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
+  
 
   // Scroll to bottom on new message
   useEffect(() => {
@@ -62,6 +63,7 @@ function App() {
     };
   }, []);
 
+  
   //login concept handler user 48-
   const handleLogin = async () => {
   if (name.trim() && email.trim()) {
@@ -193,26 +195,60 @@ const sendMessage = () => {
 const isAdmin = localStorage.getItem('isAdmin') === 'true';
 if (loggedIn && isAdmin && !selectedUser) {
   return (
+    // <div className="admin-users-list">
+    //   <h2>Admin Panel</h2>
+    //   <h3>Users</h3>
+    //   <ul>
+    //     {users.map((user, idx) => (
+    //       <li key={idx}>
+    //         <button onClick={() => setSelectedUser(user)}>
+    //           {user.name} ({user.email})
+    //         </button>
+    //       </li>
+    //     ))}
+    //   </ul>
+    //   <button className='logout-btn' onClick={() => {
+    //     localStorage.removeItem('chatUser');
+    //     localStorage.removeItem('isAdmin');
+    //     setLoggedIn(false);
+    //     setName('');
+    //     setEmail('');
+    //   }}>Logout</button>
+    // </div>
     <div className="admin-users-list">
-      <h2>Admin Panel</h2>
-      <h3>Users</h3>
-      <ul>
-        {users.map((user, idx) => (
-          <li key={idx}>
-            <button onClick={() => setSelectedUser(user)}>
-              {user.name} ({user.email})
-            </button>
-          </li>
-        ))}
-      </ul>
-      <button className='logout-btn' onClick={() => {
+  <div className="admin-header">
+    <h2> Admin Panel</h2>
+    <button
+      className="logout-btn"
+      onClick={() => {
         localStorage.removeItem('chatUser');
         localStorage.removeItem('isAdmin');
         setLoggedIn(false);
         setName('');
         setEmail('');
-      }}>Logout</button>
-    </div>
+      }}
+    >
+      Logout
+    </button>
+  </div>
+
+  <h3>📋 Users</h3>
+  <ul className="user-list">
+    {users.map((user, idx) => (
+      <li key={idx} className="user-list-item">
+        <button onClick={() => setSelectedUser(user)} className="user-button">
+          <div className="user-avatar">
+            {user.name?.charAt(0).toUpperCase()}
+          </div>
+          <div className="user-info">
+            <div className="user-name">{user.name}</div>
+            <div className="user-email">{user.email}</div>
+          </div>
+        </button>
+      </li>
+    ))}
+  </ul>
+</div>
   );
 }
 
@@ -272,7 +308,7 @@ return (
     </div>
 
     <div className="footer">
-      <span className="user-label">User Name :  {name}</span>
+      <span className="user-label">User Name : {name}</span>
       <button
         className="logout-btn"
         onClick={() => {

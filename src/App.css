@@ -14,7 +14,9 @@
 
 .chat-header {
   background-color: #a1d7ff;
-  color: #333;
+  /* color: #333; */
+  background: linear-gradient(90deg, #60daff, #0b45b2);
+  color: white;
   padding: 15px;
   display: flex;
   align-items: center;
@@ -134,4 +136,79 @@
 .user-label {
   font-weight: 500;
   color: #333;
+}
+.admin-users-list {
+  padding: 20px;
+  background-color: #f9fbfc;
+  border-radius: 8px;
+  max-width: 500px;
+  margin: 40px auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.user-list-item {
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  transition: background 0.2s ease;
+}
+
+.user-button {
+  width: 100%;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.user-button:hover {
+  background-color: #eaf6ff;
+}
+
+.user-avatar {
+  background-color: #4a90e2;
+  color: white;
+  font-weight: bold;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+  font-size: 1rem;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-name {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #333;
+}
+
+.user-email {
+  font-size: 0.875rem;
+  color: #777;
 }

@@ -173,23 +173,24 @@ const sendMessage = () => {
   // Show login form if not logged in
   if (!loggedIn) {
     return (
-      <div className='login-container'>
+    <div className="login-wrapper">
+      <div className="login-card">
         <h2>Login to Chat</h2>
         <input
-  type="text"
-  value={name}
-  placeholder="Enter name"
-  onChange={(e) => setName(e.target.value)}
-/>
-<input
-  type="email"
-  value={email}
-  placeholder="Enter email"
-  onChange={(e) => setEmail(e.target.value)}
-/>
-<button onClick={handleLogin}>Login</button>
-
+          type="text"
+          value={name}
+          placeholder="Enter your name"
+          onChange={(e) => setName(e.target.value)}
+        />
+        <input
+          type="email"
+          value={email}
+          placeholder="Enter your email"
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <button onClick={handleLogin}>Login</button>
       </div>
+    </div>
     );
   }
 const isAdmin = localStorage.getItem('isAdmin') === 'true';

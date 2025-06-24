@@ -28,7 +28,7 @@
   background: none;
   border: none;
   font-size: 1.2rem;
-  color: #4a90e2;
+  color: #004290;
   cursor: pointer;
 }
 
@@ -274,3 +274,120 @@
 .login-card button:hover {
   background-color: #732d91;
 }
+.search-input {
+  width: 100%;
+  padding: 10px 14px;
+  margin: 16px 0;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+  box-sizing: border-box;
+}
+.matched-message-preview {
+  font-size: 0.8rem;
+  color: #888;
+  margin-top: 4px;
+  text-transform: lowercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 220px;
+}
+.highlight {
+  background-color: yellow;
+  font-weight: bold;
+  border-radius: 4px;
+  padding: 0 2px;
+  /* background-color: #ffff99; Light yellow */
+}
+
+.user-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border: none;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  background-color: #ddd;
+  color: #333;
+  border-radius: 50%;
+  font-weight: bold;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+}
+
+.user-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.user-name-with-badge {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.user-name {
+  font-weight: 600;
+  font-size: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.badge {
+  background-color: rgb(30, 142, 211);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 20px;
+  min-width: 24px;
+  text-align: center;
+  margin-left: auto;
+}
+.chat-media {
+  max-width: 220px;
+  max-height: 180px;
+  border-radius: 8px;
+  margin-top: 5px;
+}
+.file-input {
+  margin-left: 8px;
+}
+
+.chat-media {
+  max-width: 240px;
+  max-height: 180px;
+  border-radius: 10px;
+  margin-top: 6px;
+}
+.file-upload-label {
+  font-size: 1.5rem;
+  cursor: pointer;
+  margin-left: 10px;
+  color: #3074e0;
+  transition: 0.2s;
+  margin-top: 4px
+}
+
+.file-upload-label:hover {
+  color: #007bff;
+}
+

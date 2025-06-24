@@ -390,4 +390,14 @@
 .file-upload-label:hover {
   color: #007bff;
 }
-
+.message {
+  background: #f1f1f1;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 10px;
+  max-width: 80%;
+}
+.message-content img, .message-content video {
+  display: block;
+  margin-top: 5px;
+}

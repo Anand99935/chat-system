@@ -111,33 +111,35 @@ function App() {
       alert('Server error while logging in');
     }
   };
-
- const handleFileChange = (e) => {
+const handleFileChange = async (e) => {
   const file = e.target.files[0];
   if (!file) return;
 
-  const reader = new FileReader();
+  const receiver = isAdmin && selectedUser ? selectedUser.name : 'Admin';
 
-  reader.onloadend = () => {
-    const isAdmin = localStorage.getItem('isAdmin') === 'true';
-    const receiver = isAdmin && selectedUser ? selectedUser.name : 'Admin';
-    const fileType = file.type.startsWith('image') ? 'image' : 'video';
+  const formData = new FormData();
+  formData.append('file', file);
 
-    socket.emit('send-message', {
-      sender: name,
-      receiver,
-      text: reader.result, // base64
-      type: fileType,
+  try {
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/api/upload`, {
+      method: 'POST',
+      body: formData
     });
-  };
 
-  reader.onerror = () => {
-    alert("File upload error");
-  };
-
-  reader.readAsDataURL(file); // base64 encode
+    const data = await res.json();
+    if (data?.url) {
+      socket.emit('send-message', {
+        sender: name,
+        receiver,
+        text: data.url,
+        type: file.type.startsWith('image') ? 'image' : 'video'
+      });
+    }
+  } catch (err) {
+    alert("File upload failed");
+    console.error(err);
+  }
 };
-
 
   const sendMessage = () => {
     if (!message.trim()) return;
@@ -208,14 +210,12 @@ function App() {
           onChange={e => setSearchTerm(e.target.value)}
           className="search-input"
         />
-
-       <ul className="user-list">
+<ul className="user-list">
   {filteredUsers.map((user, idx) => {
     const lastMsg = lastMessages[user.name];
     const hasSearch = trimmedSearch.length > 0;
     const unread = unreadCounts[user.name] > 0;
-    const matchedMsg = getMatchedMessage(user.name); // <-- Add this line
-
+    const matchedMsg = getMatchedMessage(user.name); 
     return (
       <li key={idx} className="user-list-item">
         <button

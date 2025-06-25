@@ -68,8 +68,10 @@ const handleScroll = (e) => {
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/messages`)
       .then(res => res.json())
-      .then(setChat);
-
+      .then(setChat).catch(err =>{
+         console.error('Fetch failed at /messages:', err);
+      })
+     
     socket.on('receive-message', (msg) => {
       // Only add to chat if relevant
       if (
